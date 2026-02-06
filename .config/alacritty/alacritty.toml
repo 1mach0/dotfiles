@@ -1,0 +1,24 @@
+# Alacritty Configuration
+
+[terminal.shell]
+program = "/bin/zsh"
+
+[general]
+import = ["./colors.toml"]
+
+# NOTE: alacritty doesn't support ligatures, just using this since it's my preferred font with nerdfonts.
+[font.normal]
+# family = "Liga SFMono Nerd Font"
+
+[scrolling]
+multiplier = 6
+
+[selection]
+save_to_clipboard = true
+
+[cursor]
+style.shape = "Block"
+unfocused_hollow = true
+
+[mouse]
+hide_when_typing = true
