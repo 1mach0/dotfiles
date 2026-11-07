@@ -1,0 +1,11 @@
+font-size = 16
+# font-family = "Px437 IBM VGA 8x16"
+#
+theme = base16-black-metal
+palette-generate = false
+background-opacity-cells=true
+
+custom-shader = shaders/cursor_warp.glsl
+custom-shader = shaders/ripple_rectangle_cursor.glsl
+
+shell-integration-features = sudo
