@@ -1,0 +1,46 @@
+# ~/.config/starship.toml
+# Same layout as starship's default, coloured with Ghostty's base16-black-metal
+# palette (the same colours your nvim theme uses).
+# Docs: https://starship.rs/config/
+
+palette = "black_metal"
+
+[palettes.black_metal]
+fg      = "#c1c1c1"  # normal text
+bright  = "#eeeeee"
+grey    = "#999999"
+dim     = "#6c6c6c"
+teal    = "#5f8787"
+pink    = "#dd9999"
+oxblood = "#a06666"
+
+# Prompt character on the second line: pink normally, oxblood after a failed command.
+[character]
+success_symbol = "[❯](pink)"
+error_symbol   = "[❯](bold oxblood)"
+
+# Current folder
+[directory]
+style             = "bold fg"
+truncation_length = 3
+
+# "on  master"
+[git_branch]
+style = "teal"
+
+# Uncommitted / unpushed changes, e.g. [!2?1]
+[git_status]
+style = "oxblood"
+
+# "took 3s" (shown when a command runs longer than 2 seconds)
+[cmd_duration]
+style    = "oxblood"
+min_time = 2_000
+
+# Python version / virtualenv when you're in a Python project
+[python]
+style = "grey"
+
+# conda env, if one is active
+[conda]
+style = "grey"
