@@ -50,17 +50,17 @@ zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza --color=always -1 $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza --color=always -1 $realpath'
 
-alias ls='eza'
-alias ll='eza -lh --icons --git --no-user'
-alias lls='eza -lh --icons --git --no-user --total-size'
-alias la='eza -lah --icons --git --no-user'
-alias las='eza -lah --icons --git --no-user --total-size'
-alias tree='eza --tree'
+alias ls='eza --group-directories-first --no-permissions'
+alias ll='eza --group-directories-first -lh --icons --git --no-user --no-permissions'
+alias lls='eza -lh --icons --git --no-user --total-size --no-permissions'
+alias la='eza --group-directories-first -lah --icons --git --no-user --no-permissions'
+alias las='eza -lah --icons --git --no-user --total-size --no-permissions'
+alias tree='eza --group-directories-first --no-permissions -T'
 
 alias vim='nvim'
 alias cd='z'
 alias c='clear'
-alias ff='fastfetch --logo ~/Pictures/fflogo.txt'
+alias ff='fastfetch'
 
 . "$HOME/.local/bin/env"
 
