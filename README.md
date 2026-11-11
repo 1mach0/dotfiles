@@ -6,9 +6,12 @@ My macOS setup: zsh, Neovim, Ghostty, git, fastfetch.
 
 | Path | What |
 |---|---|
-| `.config/nvim/init.lua` | Neovim: single-file config, colours taken from Ghostty's base16-black-metal |
+| `.config/nvim/` | Neovim: single-file config, colours taken from Ghostty's base16-black-metal |
 | `.config/ghostty/` | Ghostty config + `base16-black-metal` theme |
 | `.config/fastfetch/config.jsonc` | fastfetch modules |
+| `.config/gh/config.yml` | GitHub CLI settings (auth in `hosts.yml` is not tracked) |
+| `.config/herdr/config.toml` | herdr config |
+| `.config/herdr-app/` | herdr app settings, keybindings, layouts |
 | `.gitconfig` | git identity, SSH commit signing |
 | `linux/` | Old CachyOS setup (Hyprland, Waybar, Wofi, Alacritty, kickstart.nvim, p10k zshrc). Not installed on macOS. |
 

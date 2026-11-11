@@ -1,0 +1,11 @@
+onboarding = false
+
+[ui]
+status_indicators = "symbols"
+
+[theme]
+name = "terminal"
+auto_switch = false
+
+[ui.toast]
+delivery = "herdr"
