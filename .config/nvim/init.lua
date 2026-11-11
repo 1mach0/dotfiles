@@ -15,6 +15,9 @@ vim.opt.relativenumber = false  -- set to true for relative numbers
 vim.opt.cursorline = true       -- faint bar on the current line
 vim.opt.signcolumn = "yes"      -- keep text from shifting when signs appear
 vim.opt.termguicolors = true    -- Ghostty does 24-bit colour
+vim.opt.wrap = true             -- soft-wrap long lines
+vim.opt.linebreak = true        -- wrap on word boundaries, not mid-word
+vim.opt.breakindent = true      -- wrapped continuations keep the line's indent
 
 ---------------------------------------------------------------------------
 -- Palette
@@ -185,3 +188,97 @@ hi("DiagnosticUnderlineError", { undercurl = true, sp = p.pink })
 hi("DiagnosticUnderlineWarn",  { undercurl = true, sp = p.oxblood })
 hi("DiagnosticUnderlineInfo",  { undercurl = true, sp = p.teal })
 hi("DiagnosticUnderlineHint",  { undercurl = true, sp = p.dim })
+
+---------------------------------------------------------------------------
+-- Plugin manager (lazy.nvim)
+---------------------------------------------------------------------------
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "--branch=stable",
+    lazyrepo,
+    lazypath,
+  })
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out, "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
+  end
+end
+vim.opt.rtp:prepend(lazypath)
+
+require("lazy").setup({
+  spec = {
+    {
+      "nvim-treesitter/nvim-treesitter",
+      lazy = false,
+      build = ":TSUpdate",
+      config = function()
+        require("nvim-treesitter").setup({})
+        require("nvim-treesitter").install({ "markdown", "markdown_inline" })
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = { "markdown" },
+          callback = function(ev)
+            vim.treesitter.start(ev.buf)
+          end,
+        })
+      end,
+    },
+    {
+      "nvim-mini/mini.nvim",
+      version = false,
+      config = function()
+        require("mini.icons").setup()
+      end,
+    },
+    {
+      "MeanderingProgrammer/render-markdown.nvim",
+      dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" },
+      ---@module "render-markdown"
+      ---@type render.md.UserConfig
+      opts = {
+        bullet = {
+          -- Extra indent per nest level (including first level).
+          left_pad = function(ctx)
+            return ctx.level * 2
+          end,
+        },
+        -- Soft-wrapped bullet text stays indented with the list item.
+        win_options = {
+          wrap = { default = vim.o.wrap, rendered = true },
+          linebreak = { default = vim.o.linebreak, rendered = true },
+          breakindent = { default = vim.o.breakindent, rendered = true },
+          -- list:-1 = hang-indent under the bullet; shift:2 ≈ first-level left_pad
+          breakindentopt = {
+            default = vim.o.breakindentopt,
+            rendered = "list:-1,shift:2",
+          },
+        },
+      },
+      config = function(_, opts)
+        require("render-markdown").setup(opts)
+        -- So breakindentopt list:-1 matches markdown bullets (- * +) too.
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = "markdown",
+          callback = function()
+            vim.opt_local.formatlistpat =
+              [[^\s*\d\+[\]:.)}\t ]\s\+\|^\s*[-*+]\s\+]]
+          end,
+        })
+      end,
+    },
+  },
+  install = { colorscheme = { "habamax" } },
+  checker = { enabled = true },
+})
